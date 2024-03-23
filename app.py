@@ -4,7 +4,7 @@ import sqlite3
 app = Flask(__name__)
 
 @app.route('/api/libros_antiguo')
-def get_libros_antiguos():
+def get_libros_antiguo():
     try:
         # Conecta a la base de datos SQLite
         conn = sqlite3.connect('biblia.db')
@@ -23,7 +23,7 @@ def get_libros_antiguos():
         return jsonify({'error': str(e)}), 500        
 
 @app.route('/api/libros_nuevo')
-def get_libros_antiguos():
+def get_libros_nuevos():
     try:
         # Conecta a la base de datos SQLite
         conn = sqlite3.connect('biblia.db')
@@ -45,7 +45,7 @@ def get_libros_antiguos():
 @app.route('/api/versiculos_por_libro/<int:id_libro>')
 def get_versiculos_por_libro(id_libro):
     try:
-        conn = sqlite3.connect('bilbia.db')
+        conn = sqlite3.connect('biblia.db')
         cursor = conn.cursor()
         cursor.execute("""SELECT c.numero_capitulo, v.num_versiculo, v.texto
                           FROM libros l
