@@ -61,4 +61,5 @@ def get_versiculos_por_libro(id_libro):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    #app.run(debug=True)
+    app.run(host='0.0.0.0', port=8080)
