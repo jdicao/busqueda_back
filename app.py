@@ -47,6 +47,27 @@ def get_libros_nuevos():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/api/libros/<int:id_libro>')
+def get_libro(id_libro):
+    try:
+        # Conecta a la base de datos SQLite
+        conn = sqlite3.connect('biblia.db')
+        cursor = conn.cursor()
+
+        # Realiza la consulta
+        cursor.execute("""SELECT id_libro, abreviacion, qnt_capitulos, nombre FROM libros WHERE id_libro = ?""",(id_libro,))
+        libros = cursor.fetchall()
+
+        # Crea una lista de diccionarios para el resultado JSON
+        libros_json = [{'id_libro': row[0], 'abreviacion': row[1], 'qnt_capitulos': row[2], 'nombre': row[3]} for row in libros]
+
+        return jsonify(libros_json)
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+
 # Endpoint para obtener los versículos de un libro específico
 @app.route('/api/versiculos_por_libro/<int:id_libro>')
 def get_versiculos_por_libro(id_libro):
