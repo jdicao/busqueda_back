@@ -3,6 +3,12 @@ import sqlite3
 
 app = Flask(__name__)
 
+# Configuración para permitir solicitudes CORS desde cualquier origen
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
 @app.route('/api/libros_antiguo')
 def get_libros_antiguo():
     try:
