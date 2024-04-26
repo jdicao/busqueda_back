@@ -74,7 +74,7 @@ def get_versiculos_por_libro(id_libro):
     try:
         conn = sqlite3.connect('biblia.db')
         cursor = conn.cursor()
-        cursor.execute("""SELECT c.numero_capitulo, v.num_versiculo, v.texto
+        cursor.execute("""SELECT v.id_versiculo, c.numero_capitulo, v.num_versiculo, v.texto
                           FROM libros l
                           INNER JOIN capitulos c ON c.id_libro = l.id_libro
                           INNER JOIN versiculos v ON v.id_capitulo = c.id_capitulo
