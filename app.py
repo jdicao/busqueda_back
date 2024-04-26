@@ -80,7 +80,7 @@ def get_versiculos_por_libro(id_libro):
                           INNER JOIN versiculos v ON v.id_capitulo = c.id_capitulo
                           WHERE l.id_libro = ? order by c.numero_capitulo, v.num_versiculo""", (id_libro,))
         versiculos = cursor.fetchall()
-        versiculos_json = [{'numero_capitulo': row[0], 'num_versiculo': row[1], 'texto': row[2]} for row in versiculos]
+        versiculos_json = [{'id_versiculo': row[0], 'numero_capitulo': row[1], 'num_versiculo': row[2], 'texto': row[3]} for row in versiculos]
         return jsonify(versiculos_json)
 
     except Exception as e:
