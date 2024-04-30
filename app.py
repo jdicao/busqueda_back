@@ -73,9 +73,10 @@ def get_libronombre(nombre_libro):
         conn = sqlite3.connect('biblia.db')
         cursor = conn.cursor()
 
+        nombre_normalizado = unicodedata.normalize('NFKD', nombre_libro.lower())
         # Realiza la consulta
         #cursor.execute("""SELECT id_libro, abreviacion, qnt_capitulos, nombre, testamento FROM libros WHERE nombre LIKE ?""", ('%' + nombre_libro + '%',))
-        cursor.execute("""SELECT id_libro, abreviacion, qnt_capitulos, nombre, testamento FROM libros WHERE LOWER(unicodedata.normalize('NFKD', nombre)) LIKE ?""", ('%' + unicodedata.normalize('NFKD', nombre_libro) + '%',))
+        cursor.execute("""SELECT id_libro, abreviacion, qnt_capitulos, nombre, testamento FROM libros WHERE LOWER(nombre) LIKE LOWER(?)""", ('%' + nombre_libro + '%',))
 
         libros = cursor.fetchall()
 
