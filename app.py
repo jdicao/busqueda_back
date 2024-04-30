@@ -1,5 +1,6 @@
 from flask import Flask, jsonify
 import sqlite3
+import unicodedata
 
 app = Flask(__name__)
 
@@ -114,7 +115,7 @@ def get_clave(apikey):
 
         # Realiza la consulta
         #cursor.execute("""select key from apis where api = ?""",(apikey,))
-        cursor.execute("""SELECT key FROM apis WHERE LOWER(api) = LOWER(?)""", (apikey,))
+        cursor.execute("""SELECT key FROM apis WHERE LOWER(unicodedata.normalize('NFKD', api)) = LOWER(?)""", (unicodedata.normalize('NFKD', apikey),))
 
         claves = cursor.fetchall()
 
