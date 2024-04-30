@@ -113,7 +113,9 @@ def get_clave(apikey):
         cursor = conn.cursor()
 
         # Realiza la consulta
-        cursor.execute("""select key from apis where api = ?""",(apikey,))
+        #cursor.execute("""select key from apis where api = ?""",(apikey,))
+        cursor.execute("""SELECT key FROM apis WHERE LOWER(api) = LOWER(?)""", (apikey,))
+
         claves = cursor.fetchall()
 
         # Crea una lista de diccionarios para el resultado JSON
