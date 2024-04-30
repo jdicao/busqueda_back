@@ -66,6 +66,24 @@ def get_libro(id_libro):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/api/librosnombre/<string:nombre_libro>')
+def get_libronombre(nombre_libro):
+    try:
+        # Conecta a la base de datos SQLite
+        conn = sqlite3.connect('biblia.db')
+        cursor = conn.cursor()
+
+        # Realiza la consulta
+        cursor.execute("""SELECT id_libro, abreviacion, qnt_capitulos, nombre, testamento FROM libros WHERE nombre LIKE ?""", ('%' + nombre_libro + '%',))
+        libros = cursor.fetchall()
+
+        # Crea una lista de diccionarios para el resultado JSON
+        libros_json = [{'id_libro': row[0], 'abreviacion': row[1], 'qnt_capitulos': row[2], 'nombre': row[3], 'testamento': row[4]} for row in libros]
+
+        return jsonify(libros_json)
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 
 # Endpoint para obtener los versículos de un libro específico
