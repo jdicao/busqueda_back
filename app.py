@@ -105,6 +105,25 @@ def get_versiculos_por_libro(id_libro):
         return jsonify({'error': str(e)}), 500
 
 
+@app.route('/api/keyapi/<string:apikey>')
+def get_clave(apikey):
+    try:
+        # Conecta a la base de datos SQLite
+        conn = sqlite3.connect('biblia.db')
+        cursor = conn.cursor()
+
+        # Realiza la consulta
+        cursor.execute("""select key from apis where api = ?""",(apikey,))
+        claves = cursor.fetchall()
+
+        # Crea una lista de diccionarios para el resultado JSON
+        claves_json = [{'clave': row[0]} for row in claves]
+
+        return jsonify(claves_json)
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 if __name__ == '__main__':
     #app.run(debug=True)
     app.run(host='0.0.0.0', port=8080)
