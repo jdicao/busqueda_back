@@ -1,7 +1,6 @@
 from flask import Flask, jsonify
 import sqlite3
 import unicodedata
-
 app = Flask(__name__)
 
 # Configuración para permitir solicitudes CORS desde cualquier origen
@@ -75,7 +74,9 @@ def get_libronombre(nombre_libro):
         cursor = conn.cursor()
 
         # Realiza la consulta
-        cursor.execute("""SELECT id_libro, abreviacion, qnt_capitulos, nombre, testamento FROM libros WHERE nombre LIKE ?""", ('%' + nombre_libro + '%',))
+        #cursor.execute("""SELECT id_libro, abreviacion, qnt_capitulos, nombre, testamento FROM libros WHERE nombre LIKE ?""", ('%' + nombre_libro + '%',))
+        cursor.execute("""SELECT id_libro, abreviacion, qnt_capitulos, nombre, testamento FROM libros WHERE LOWER(unicodedata.normalize('NFKD', nombre)) LIKE ?""", ('%' + unicodedata.normalize('NFKD', nombre_libro) + '%',))
+
         libros = cursor.fetchall()
 
         # Crea una lista de diccionarios para el resultado JSON
@@ -115,7 +116,7 @@ def get_clave(apikey):
 
         # Realiza la consulta
         #cursor.execute("""select key from apis where api = ?""",(apikey,))
-        cursor.execute("""SELECT key FROM apis WHERE LOWER(unicodedata.normalize('NFKD', api)) = LOWER(?)""", (unicodedata.normalize('NFKD', apikey),))
+        cursor.execute("""SELECT key FROM apis WHERE LOWER(api) = LOWER(?)""", (apikey,))
 
         claves = cursor.fetchall()
 
